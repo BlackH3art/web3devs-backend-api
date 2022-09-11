@@ -1,7 +1,8 @@
-import { Body, Controller, Post, Inject } from '@nestjs/common';
+import { Body, Controller, Post, Inject, Param, Res } from '@nestjs/common';
 import { WhitelistService } from './whitelist.service';
 
 import { HashedMessageInterface } from 'src/interfaces/HashedMessageInterface';
+import { Response } from 'express';
 
 
 @Controller('whitelist')
@@ -12,11 +13,13 @@ export class WhitelistController {
   ) {}
 
 
-  @Post('/signature')
+  @Post('/:address')
   getSignature(
-    @Body() hashedMessage: HashedMessageInterface
+    @Param('address') address: string,
+    @Body() hashedMessage: HashedMessageInterface,
+    @Res() res: Response,
   ): Promise<any> {
-    return this.whitelistService.signMessageForContract(hashedMessage);
+    return this.whitelistService.signMessageForContract(hashedMessage, address, res);
   }
 
   
