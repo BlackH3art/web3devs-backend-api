@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Inject, Param, Res } from '@nestjs/common';
+import { Body, Controller, Post, Inject, Param, Res, Delete } from '@nestjs/common';
 import { WhitelistService } from './whitelist.service';
 
 import { HashedMessageInterface } from 'src/interfaces/HashedMessageInterface';
@@ -20,6 +20,15 @@ export class WhitelistController {
     @Res() res: Response,
   ): Promise<any> {
     return this.whitelistService.signMessageForContract(hashedMessage, address, res);
+  }
+
+
+  @Delete(':address')
+  removeFromWhitelist(
+    @Param('address') address: string,
+    @Res() res: Response
+  ): Promise<any> {
+    return this.whitelistService.removeFromWhitelist(address, res);
   }
 
   
